@@ -45,8 +45,8 @@ pair<bool, vector<Coordinate>> Board::possible_moves(const Coordinate &piece) {
     int x = piece.x, y = piece.y;
     bool can_eat = false;
     if (grid[x][y] == 1) { // white piece
-        // if an enemy piece is in front of us && there is space behind it -> must it
-
+        // if an enemy piece is in front or behind us && there is space behind it -> must take it
+        // TODO
 
         if(!can_eat) {
             // if there is a free space, you can advance
@@ -56,4 +56,5 @@ pair<bool, vector<Coordinate>> Board::possible_moves(const Coordinate &piece) {
                 moves.push_back(Coordinate{piece.x + 1, piece.y + 1});
         }
     }
+    return make_pair(can_eat, can_eat?eat_moves:moves);
 }
