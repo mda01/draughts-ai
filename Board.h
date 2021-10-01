@@ -33,37 +33,53 @@ private:
      */
     vector<vector<int>> grid; // 0 empty 1 white 2 black 3 white queen 4 black queen
     int nb_turn;
+    bool turn; // true -> white to play
+
+    int nb_white_pawns, nb_black_pawns;
+
+    bool chain_eat;
+    Coordinate pawn_chain{0, 0};
 
     void init_grid();
 
-    bool is_free(int x, int y) { return !grid[x][y]; }
+    [[nodiscard]] bool is_free(const int &x, const int &y) const { return !grid[x][y]; }
 
-    pair<bool, vector<Coordinate>> possible_moves(const Coordinate& piece);
+    [[nodiscard]] pair<bool, vector<Coordinate>> possible_moves(const Coordinate &piece) const;
 
 public:
     Board() {
         turn = true;
         nb_turn = 0;
         init_grid();
+        nb_white_pawns = 20;
+        nb_black_pawns = 20;
+        chain_eat = false;
     }
 
     Board(const Board &b) {
         grid = vector<vector<int>>(b.grid);
         turn = b.turn;
         nb_turn = b.nb_turn;
+        nb_white_pawns = b.nb_white_pawns;
+        nb_black_pawns = b.nb_black_pawns;
+        chain_eat = b.chain_eat;
+        pawn_chain = b.pawn_chain;
     }
 
-    bool turn; // true -> white to play
 
-    vector<vector<int>> get_grid() { return grid; };
+    [[nodiscard]] vector<vector<int>> get_grid() const { return grid; };
 
-    void print_grid();
+    void print_grid() const;
 
-    void print_state();
+    void print_state() const;
 
-    vector<pair<Coordinate, Coordinate>> get_moves();
+    [[nodiscard]] vector<pair<Coordinate, Coordinate>> get_moves() const;
 
-    void play_move(Coordinate start, Coordinate end);
+    void play_move(const Coordinate &start, const Coordinate &end);
+
+    [[nodiscard]] bool is_over() const;
+
+    [[nodiscard]] int heuristic() const;
 };
 
 
