@@ -41,32 +41,32 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
     if (grid[piece.x][piece.y] == 0)
         return make_pair(false, vector<coordinate>());
     vector<coordinate> moves;
-    vector<coordinate> eat_moves;
+    vector<coordinate> eatMoves;
     int x = piece.x, y = piece.y;
-    bool can_eat = false;
+    bool canEat = false;
     if (grid[x][y] == 1) { // white pawn
         // if an enemy piece is in front or behind us && there is space behind it -> must take it
         if (coordinate::isValid(x + 2, y - 2) && isFree(x + 2, y - 2) &&
             (grid[x + 1][y - 1] == 2 || grid[x + 1][y - 1] == 4)) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x + 2, y - 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x + 2, y - 2});
         }
         if (coordinate::isValid(x + 2, y + 2) && isFree(x + 2, y + 2) &&
             (grid[x + 1][y + 1] == 2 || grid[x + 1][y + 1] == 4)) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x + 2, y + 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x + 2, y + 2});
         }
         if (coordinate::isValid(x - 2, y + 2) && isFree(x - 2, y + 2) &&
             (grid[x - 1][y + 1] == 2 || grid[x - 1][y + 1] == 4)) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x - 2, y + 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x - 2, y + 2});
         }
         if (coordinate::isValid(x - 2, y - 2) && isFree(x - 2, y - 2) &&
             (grid[x - 1][y - 1] == 2 || grid[x - 1][y - 1] == 4)) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x - 2, y - 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x - 2, y - 2});
         }
-        if (!can_eat) {
+        if (!canEat) {
             // if there is a free space, you can advance
             if (coordinate::isValid(x + 1, y - 1) && isFree(x + 1, y - 1))
                 moves.push_back(coordinate{x + 1, y - 1});
@@ -77,25 +77,25 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
         // if an enemy piece is in front or behind us && there is space behind it -> must take it
         if (coordinate::isValid(x + 2, y - 2) && isFree(x + 2, y - 2) &&
             grid[x + 1][y - 1] & 1) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x + 2, y - 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x + 2, y - 2});
         }
         if (coordinate::isValid(x + 2, y + 2) && isFree(x + 2, y + 2) &&
             grid[x + 1][y + 1] & 1) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x + 2, y + 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x + 2, y + 2});
         }
         if (coordinate::isValid(x - 2, y + 2) && isFree(x - 2, y + 2) &&
             grid[x - 1][y + 1] & 1) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x - 2, y + 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x - 2, y + 2});
         }
         if (coordinate::isValid(x - 2, y - 2) && isFree(x - 2, y - 2) &&
             grid[x - 1][y - 1] & 1) {
-            can_eat = true;
-            eat_moves.push_back(coordinate{x - 2, y - 2});
+            canEat = true;
+            eatMoves.push_back(coordinate{x - 2, y - 2});
         }
-        if (!can_eat) {
+        if (!canEat) {
             // if there is a free space, you can advance
             if (coordinate::isValid(x - 1, y - 1) && isFree(x - 1, y - 1))
                 moves.push_back(coordinate{x - 1, y - 1});
@@ -121,8 +121,8 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
         // if there is something blocking and there is space behind and the thing blocking is an enemy, eat
         if (blocked && coordinate::isValid(x + (i + 1), y + (i + 1)) && isFree(x + (i + 1), y + (i + 1)) &&
             (grid[x + i][y + i] & 1) == 0) {
-            can_eat = true;
-            eat_moves.emplace_back(coordinate{x + (i + 1), y + (i + 1)});
+            canEat = true;
+            eatMoves.emplace_back(coordinate{x + (i + 1), y + (i + 1)});
         }
         blocked = false;
         for (i = 1; i <= 9; i++) {
@@ -140,8 +140,8 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
         // if there is something blocking and there is space behind and the thing blocking is an enemy, eat
         if (blocked && coordinate::isValid(x - (i + 1), y + (i + 1)) && isFree(x - (i + 1), y + (i + 1)) &&
             (grid[x - i][y + i] & 1) == 0) {
-            can_eat = true;
-            eat_moves.emplace_back(coordinate{x - (i + 1), y + (i + 1)});
+            canEat = true;
+            eatMoves.emplace_back(coordinate{x - (i + 1), y + (i + 1)});
         }
         blocked = false;
         for (i = 1; i <= 9; i++) {
@@ -159,8 +159,8 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
         // if there is something blocking and there is space behind and the thing blocking is an enemy, eat
         if (blocked && coordinate::isValid(x + (i + 1), y - (i + 1)) && isFree(x + (i + 1), y - (i + 1)) &&
             (grid[x + i][y - i] & 1) == 0) {
-            can_eat = true;
-            eat_moves.emplace_back(coordinate{x + (i + 1), y - (i + 1)});
+            canEat = true;
+            eatMoves.emplace_back(coordinate{x + (i + 1), y - (i + 1)});
         }
         blocked = false;
         for (i = 1; i <= 9; i++) {
@@ -178,23 +178,23 @@ pair<bool, vector<coordinate>> board::possibleMoves(const coordinate &piece) con
         // if there is something blocking and there is space behind and the thing blocking is an enemy, eat
         if (blocked && coordinate::isValid(x - (i + 1), y - (i + 1)) && isFree(x - (i + 1), y - (i + 1)) &&
             (grid[x - i][y - i] & 1) == 0) {
-            can_eat = true;
-            eat_moves.emplace_back(coordinate{x - (i + 1), y - (i + 1)});
+            canEat = true;
+            eatMoves.emplace_back(coordinate{x - (i + 1), y - (i + 1)});
         }
     }
-    return make_pair(can_eat, can_eat ? eat_moves : moves);
+    return make_pair(canEat, canEat ? eatMoves : moves);
 }
 
 vector<pair<coordinate, coordinate>> board::getMoves() const {
-    vector<pair<coordinate, coordinate>> moves, eat_moves;
+    vector<pair<coordinate, coordinate>> moves, eatMoves;
     if (chainEat) {
         auto move = possibleMoves(pawnChain);
         for (auto &m: move.second) {
-            eat_moves.emplace_back(pawnChain, m);
+            eatMoves.emplace_back(pawnChain, m);
         }
-        return eat_moves;
+        return eatMoves;
     }
-    bool can_eat = false;
+    bool canEat = false;
     if (turn) {
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
@@ -202,12 +202,12 @@ vector<pair<coordinate, coordinate>> board::getMoves() const {
                     coordinate tile{x, y};
                     auto move = possibleMoves(tile);
                     if (move.first) {
-                        can_eat = true;
+                        canEat = true;
                         for (auto &m : move.second) {
-                            eat_moves.emplace_back(tile, m);
+                            eatMoves.emplace_back(tile, m);
                         }
                     } else {
-                        if (!can_eat) {
+                        if (!canEat) {
                             for (auto &m: move.second) {
                                 moves.emplace_back(tile, m);
                             }
@@ -223,12 +223,12 @@ vector<pair<coordinate, coordinate>> board::getMoves() const {
                     coordinate tile{x, y};
                     auto move = possibleMoves(tile);
                     if (move.first) {
-                        can_eat = true;
+                        canEat = true;
                         for (auto &m : move.second) {
-                            eat_moves.emplace_back(tile, m);
+                            eatMoves.emplace_back(tile, m);
                         }
                     } else {
-                        if (!can_eat) {
+                        if (!canEat) {
                             for (auto &m: move.second) {
                                 moves.emplace_back(tile, m);
                             }
@@ -238,7 +238,7 @@ vector<pair<coordinate, coordinate>> board::getMoves() const {
             }
         }
     }
-    return can_eat ? eat_moves : moves;
+    return canEat ? eatMoves : moves;
 }
 
 void board::playMove(const coordinate &start, const coordinate &end) {
@@ -273,8 +273,8 @@ void board::playMove(const coordinate &start, const coordinate &end) {
             grid[end.x][end.y] = 4;
         }
         // chain eat?
-        auto next_moves = possibleMoves(end);
-        if (next_moves.first) {
+        auto nextMoves = possibleMoves(end);
+        if (nextMoves.first) {
             chainEat = true;
             pawnChain = end;
         } else {
