@@ -79,7 +79,14 @@ public:
 
     [[nodiscard]] bool isOver() const;
 
-    [[nodiscard]] int heuristic() const;
+    [[nodiscard]] int heuristic(bool color) const;
+
+    [[nodiscard]] vector<pair<pair<coordinate, coordinate>, board>> children() const;
+
+    [[nodiscard]] bool getTurn() const;
+
+    [[nodiscard]] bool isChainEat() const;
+
 };
 
 
