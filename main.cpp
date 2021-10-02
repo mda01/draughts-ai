@@ -2,27 +2,33 @@
 #include <QPushButton>
 #include "board.h"
 #include "minMax.h"
+
+
+void playMove(board &b, const minMax &ai) {
+    vector<pair<coordinate, coordinate>> actions;
+    int confidence = ai.alphaBeta(b, actions);
+    auto action = actions.front();
+    b.playMove(action.first, action.second);
+    cout << "Played " << board::coordToTile(action.first) << " -> "
+         << board::coordToTile(action.second) << " (confidence: " << confidence << ")" << endl;
+}
+
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
     board b{};
-    minMax m(false);
-    minMax m2(true);
+    minMax mwhite(true);
+    minMax mblack(false);
     vector<pair<coordinate, coordinate>> actions;
-    b.printState();
-    while (!b.isOver()){
-        //int startx, starty, endx, endy;
-        //cin >> startx >> starty >> endx >> endy;
-        //b.playMove(coordinate{startx, starty}, coordinate{endx, endy});
-
+    while (!b.isOver()) {
+//    while (false) {
+        b.printState();
         if (b.getTurn()) {
-            m2.alphaBeta(b, actions);
-            b.playMove(actions.front().first, actions.front().second);
-            b.printState();
+            playMove(b, mwhite);
         } else {
-            m.alphaBeta(b, actions);
-            b.playMove(actions.front().first, actions.front().second);
-            b.printState();
+            int start, end;
+            //cin >> start >> end;
+            //b.playMove(board::tileToCoord(start), board::tileToCoord(end));
+            playMove(b, mblack);
         }
     }
     button.resize(200, 100);
