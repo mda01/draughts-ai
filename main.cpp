@@ -1,5 +1,6 @@
 #include <QApplication>
-#include <QPushButton>
+#include <QWindow>
+#include "basewindow.h"
 #include "board.h"
 #include "minMax.h"
 
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
             playMove(b, mblack);
         }
     }
-    button.resize(200, 100);
-    button.show();
+    baseWindow bw;
+    bw.show();
     return QApplication::exec();
 }

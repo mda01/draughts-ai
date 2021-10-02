@@ -8,7 +8,7 @@
 
 #include "board.h"
 
-#define MAX_DEPTH 10
+#define MAX_DEPTH 4
 
 class minMax {
 private:
