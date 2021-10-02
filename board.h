@@ -87,6 +87,9 @@ public:
 
     [[nodiscard]] bool isChainEat() const;
 
+    static int coordToTile(const coordinate &c);
+
+    static coordinate tileToCoord(int t);
 };
 
 

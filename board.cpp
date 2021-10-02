@@ -6,15 +6,15 @@
 
 void board::initGrid() {
     grid = vector<vector<int>>(10, vector<int>(10, 0));
-    grid[0] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
-    grid[2] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
-    grid[1] = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
-    grid[3] = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
+    grid[1] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+    grid[3] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+    grid[0] = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
+    grid[2] = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
 
-    grid[6] = {0, 2, 0, 2, 0, 2, 0, 2, 0, 2};
-    grid[8] = {0, 2, 0, 2, 0, 2, 0, 2, 0, 2};
-    grid[7] = {2, 0, 2, 0, 2, 0, 2, 0, 2, 0};
-    grid[9] = {2, 0, 2, 0, 2, 0, 2, 0, 2, 0};
+    grid[7] = {0, 2, 0, 2, 0, 2, 0, 2, 0, 2};
+    grid[9] = {0, 2, 0, 2, 0, 2, 0, 2, 0, 2};
+    grid[6] = {2, 0, 2, 0, 2, 0, 2, 0, 2, 0};
+    grid[8] = {2, 0, 2, 0, 2, 0, 2, 0, 2, 0};
 
 }
 
@@ -31,12 +31,16 @@ void board::printGrid() const {
 void board::printState() const {
     cout << "Tour n°" << nbTurn << endl;
     cout << "Blanc a " << nbWhitePawns << " pions et Noir en a " << nbBlackPawns << endl;
-    cout << (turn ? "Blanc" : "Noir") << " va jouer" << endl;
+    if (isOver()) {
+        cout << "Partie terminée" << endl;
+    } else {
+        cout << (turn ? "Blanc" : "Noir") << " va jouer" << endl;
+    }
     cout << "--------------------" << endl;
     this->printGrid();
     cout << "--------------------" << endl;
     for (auto &move: getMoves()) {
-        cout << move.first.x << " " << move.first.y << " -> " << move.second.x << " " << move.second.y << endl;
+        cout << coordToTile(move.first) << " -> " << coordToTile(move.second) << endl;
     }
 
 }
@@ -403,4 +407,16 @@ bool board::getTurn() const {
 
 bool board::isChainEat() const {
     return chainEat;
+}
+
+int board::coordToTile(const coordinate &c) {
+    return 5 * (9 - c.x) + c.y / 2 + 1;
+}
+
+coordinate board::tileToCoord(int t) {
+    t--;
+    coordinate c{9 - t / 5, 0};
+    c.y = t % 5 * 2;
+    if (c.x & 1) c.y++;
+    return c;
 }
